@@ -51,3 +51,17 @@
     ```bash
     docker run --name $CONTAINER_NAME -dit --net=$NETWORK_NAME -p $PORT_SET -e WORDPRESS_DB_HOST=$DATABASE_CONTAINER_NAME -e WORDPRESS_DB_NAME=$DATABASE_NAME -e WORDPRESS_DB_USER=$DATABASE_USER_NAME -e WORDPRESS_DB_PASSWORD=$DATABASE_PASSWORD wordpress
     ```
+
+### 뒷정리
+
+- 컨테이너를 생성한 후에는 뒷정리를 하는 습관을 들이자.
+
+- 도커 데스크톱을 사용할 때는 컴퓨터의 리소스를 차지하는 경우가 많다.
+
+- 도커 이미지를 그때그때 지우자.
+
+- 뒷정리 항목:
+    - 컨테이너 `docker container ~`
+    - 이미지 `docker image ~`
+    - 네트워크 `docker network ~`
+    - 볼륨 `docker volume ~`
