@@ -59,34 +59,91 @@
 
 - 스토리지 영역을 만드는 방법
 
-    - 스토리지를 마운트 하려면 먼저 마운트될 스토리지를 생성해야 한다.
+    - 스토리지를 마운트 하려면 먼저 마운트할 스토리지를 생성해야 한다.
 
         - 바인드 마운트는 원본이 될 폴더나 파일을 먼저 만든다.
 
         - 볼륨 마운트는 볼륨 상위 커맨들르 사용해 먼저 볼륨을 생성한다.
 
-    ```bash
-        # create volume
-        docker volume create $VOLUME_NAME
-        # remove volume
-        docker volune rm $VOLUME_NAME
-    ```
+            ```bash
+            # create volume
+            docker volume create $VOLUME_NAME
+            # remove volume
+            docker volune rm $VOLUME_NAME
+            ```
     
-    - 주요 하위 커맨드
+        - 주요 하위 커맨드
 
-        | 커맨드 | 내용 |
-        |--------|------|
-        | create | 볼륨을 생성 |
-        | inspect | 볼륨의 상세 정보를 출력 |
-        | ls | 볼륨의 목록을 출력 |
-        | prune | 현재 마운트되지 않은 볼륨을 모두 삭제 |
-        | rm | 지정한 볼륨을 삭제 |
+            | 커맨드 | 내용 |
+            |--------|------|
+            | create | 볼륨을 생성 |
+            | inspect | 볼륨의 상세 정보를 출력 |
+            | ls | 볼륨의 목록을 출력 |
+            | prune | 현재 마운트되지 않은 볼륨을 모두 삭제 |
+            | rm | 지정한 볼륨을 삭제 |
 
 - 스토리지를 마운트하는 커맨드
 
     ```bash
-        # bind-mount command example
-        docker run ... -v $STORAGE_PATH:$CONTAINER_MOUNT_PATH
-        # volume-mount command example
-        docker run ... -v $VOLUME_NAME:$CONTAINER_MOUNT_PATH
+    # bind-mount command example
+    docker run ... -v $STORAGE_PATH:$CONTAINER_MOUNT_PATH
+
+    # volume-mount command example
+    docker run ... -v $VOLUME_NAME:$CONTAINER_MOUNT_PATH
     ```
+
+## 컨테이너로 이미지 만들기
+
+### commit 커맨드로 컨테이너를 이미지로 변환
+
+- 기존 컨테이너를 복제하거나 이동해야 할 때 활용한다.
+
+    ```bash
+    docker commit $CONTAINER_NAME $NEW_IMAGE_NAME
+    ```
+
+### Dockerfile 스크립트로 이미지 만들기
+
+- Dockerfile 스크립트에는 토대가 될 이미지나 실행할 명령어 등을 기재한다.
+
+- Dockerfile을 호스트 컴퓨터의 이미지 재료가 들어있는 폴더에 넣는다.
+
+    ```bash
+    docker build -t $IMAGE_NAME_TO_CREATE $BASE_FOLDER_PATH
+    ```
+
+- 주요 Dockerfile 인스트럭션
+
+    | 인스트럭션 | 내용 |
+    |---|---|
+    | FROM | 토대가 되는 이미지를 지정 |
+    | ADD | 이미지에 파일이나 폴더를 추가 |
+    | COPY | 이미지에 파일이나 폴더를 추가 |
+    | RUN | 이미지를 빌드할 때 실행할 명령어를 지정 |
+    | CMD | 컨테이너를 실행할 때 실행할 명령어를 지정 |
+    | ENTRYPOINT | 컨테이너를 실행할 때 실행할 명령어를 강제 지정 |
+    | ONBUILD | 이 이미지를 기반으로 다른 이미지를 빌드할 때 실행할 명령어를 지정 |
+    | EXPOSE | 이미지가 통신에 사용할 포트를 명시적으로 지정 |
+    | VOLUME | 퍼시스턴시 데이터를 저장할 경로를 명시적으로 지정 |
+    | ENV | 환경변수를 정의 |
+    | WORKDIR | RUN, CMD, ENTRYPOINT, ADD, COPY에 정의된 명령어를 실행하는 작업 디렉터리를 지정 |
+    | SHELL | 빌드 시 사용할 셸을 변경 |
+    | LABEL | 이름이나 버전, 저작자 정보를 설정 |
+    | USER | RUN, CMD, ENTRYPOINT에 정의된 명령어를 실행하는 사용자 또는 그룹을 지정 |
+    | ARG | docker build 커맨드를 사용할 때 입력받을 수 있는 인자를 선언 |
+    | STOPSIGNAL | docker stop 커맨드를 사용할 때 컨테이너 안에서 실행 중인 프로그램에 전달되는 시그널을 변경 |
+    | HEALTHCHECK | 컨테이너 헬스체크 방법을 커스터마이징 |
+
+### 이미지를 옮기는 방법
+
+- 이미지 상태 그대로는 옮기거나 복사할 수 없다.
+
+- 도커 레지스트리를  통하거나 save 커맨드를 사용해 tar 포맷으로 내보내야 한다.
+
+    - tar 파일 생성
+
+        ```bash
+        docker save -o $FILE_NAME.tar $IMAGE_NAME
+        ```
+
+- 파일을 다시 도커 엔진에 가져오려면 load 커맨드를 사용한다.
