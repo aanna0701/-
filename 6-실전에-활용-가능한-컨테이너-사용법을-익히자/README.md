@@ -183,3 +183,41 @@
   - 도커 엔진 자체의 시작 또는 종료, 네트워크, 디스크 설정, 실행 중인 컨테이너 목록 확인 등
 
 - 반면 컨테이너 내부에서 실행하는 명령은 컨테이너 속에 `새로운 소프트웨어 추가`, `소프트웨어의 실행 및 종료`, `설정 변경`, `컨테이너 안과 밖의 파일 복사 및 이동, 삭제` 작업이다.
+
+## 이미지를 공유하는 방법
+
+### 도커 허브와 도커 레지스트리
+
+- 이미지를 배포하는 장소를 `도커 레지스트리`라고 한다.
+
+- 도커 허브는 도커 제작사에서 운영하는 공식 도커 레지스트리를 말한다.
+
+- `레포지토리`는 레지스트리를 구성하는 단위이다.
+
+    - 레포지토리는 소프트웨어를 단위로 한다.
+
+### 태그와 이미지 업로드
+
+- 이미지에 태그를 부여해 복제하는 커맨드
+
+    ```bash
+    # docker tag $ORIGINAL_IMAGE_NAME $REGISTRY_ADDRESS/$REPOSITORY_NAME:$VERSION
+    docker tag apa000ex22 zoozoo.coomm/nyapacchi:13
+    ```
+
+- 이미지를 업로드하는 커맨드
+
+    ```bash
+    # docker push $REGISTRY_ADDRESS/$REPOSITORY_NAME:$VERSION
+    docker push zoozoo.coomm/nyapacchi:13
+    ```
+
+### 레지스트리를 만드는 방법
+
+- 비공개 레지스트리를 만드는 방법
+
+    ```bash
+    docker run -d -p 5000:5000 registry
+    ```
+
+- 이미지를 공개적으로 배포하려면 도커 허브를 사용한다.
