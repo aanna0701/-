@@ -16,9 +16,12 @@
   - 볼륨과 이미지는 삭제하지 않는다.
 
 ### 도커 컴포즈 vs Dockerfile vs 쿠버네티스
+<img src=from_docker-image_to_docker-container.png alt="image1" width="400">
+
 - Dockerfile은 이미지를 만드는 데 쓰임
 - 도커 컴포즈는 컨테이너, 네트워크, 볼륨을 만드는 데 쓰임
 - 쿠버네티스는 컨테이너를 관리하는 도구
+
 
 <br />
 
